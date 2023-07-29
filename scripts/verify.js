@@ -10,7 +10,7 @@ async function main() {
   // Live address of the contract
   const address = ''
 
-  // Specific contract inside /contracts. denoted as "Filename.sol:ClassName"
+  // Specific contract inside /contracts. denoted as "Filename.sol:ContractName"
   const contract = ''
 
   // Put constructor args (if any) here for your contract
