@@ -11,10 +11,11 @@ async function main() {
   const address = ''
 
   // Specific contract inside /contracts. denoted as "Filename.sol:ContractName"
+  // Leave blank if there is only one. 
   const contract = ''
 
   // Put constructor args (if any) here for your contract
-  const constructorArguments = {}
+  const constructorArguments = []
 
   if(address === '') {
     throw Error("I can't do it without an address")
