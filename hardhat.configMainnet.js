@@ -5,33 +5,34 @@ module.exports = {
   solidity: {
     version: "0.8.21",
 
-    // Additional compiler settings
-    // settings: {
-    //   optimizer: {
-    //     enabled: false,
-    //     runs: 200
-    //   },
-    //   outputSelection: {
-    //    "*": {
-    //       "": [
-    //         "ast"
-    //       ],
-    //       "*": [
-    //         "abi",
-    //         "metadata",
-    //         "devdoc",
-    //         "userdoc",
-    //         "storageLayout",
-    //         "evm.legacyAssembly",
-    //         "evm.bytecode",
-    //         "evm.deployedBytecode",
-    //         "evm.methodIdentifiers",
-    //         "evm.gasEstimates",
-    //         "evm.assembly"
-    //       ]
-    //     }
-    //   }      
-    // }
+    // Additional compiler settings, make sure evmVersion is correct
+    settings: {
+      "evmVersion": "shanghai",
+      optimizer: {
+        enabled: false,
+        runs: 200
+      },
+      outputSelection: {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "metadata",
+            "devdoc",
+            "userdoc",
+            "storageLayout",
+            "evm.legacyAssembly",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "evm.gasEstimates",
+            "evm.assembly"
+          ]
+        }
+      }
+    }
     
   },
   networks: {
