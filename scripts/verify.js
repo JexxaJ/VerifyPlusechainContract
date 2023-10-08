@@ -12,7 +12,7 @@ async function main() {
 
   // Specific contract inside /contracts. denoted as "Filename.sol:ContractName"
   // Leave blank if there is only one. 
-  const contract = ''
+  const contract = 'contracts/Filename.sol:ContractName'
 
   // Put constructor args (if any) here for your contract
   const constructorArguments = []
