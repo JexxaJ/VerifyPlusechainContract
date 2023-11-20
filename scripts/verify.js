@@ -8,28 +8,28 @@ const hre = require("hardhat");
 
 async function main() {
   // Live address of the contract
-  const address = ''
+  const address = '0x21F279B6de28C98a3093E4D79e11E7b82a2E225C'
 
   // Specific contract inside /contracts. denoted as "Filename.sol:ContractName"
   // Leave blank if there is only one. 
-  const contract = 'contracts/Filename.sol:ContractName'
+  const contract = 'contracts/fluffy.sol:FluffySlippersEdition0'
 
   // Put constructor args (if any) here for your contract
   const constructorArguments = []
 
-  if(address === '') {
+  if (address === '') {
     throw Error("I can't do it without an address")
   }
 
-  if(contract === '') {
+  if (contract === '') {
     console.warn("While I can run without specifying the contract, it's error prone. YMMV")
   }
 
   console.log('Running verify script...')
 
   await run("verify:verify", {
-    address: address, 
-    contract: contract, 
+    address: address,
+    contract: contract,
     constructorArguments: constructorArguments
   })
 }

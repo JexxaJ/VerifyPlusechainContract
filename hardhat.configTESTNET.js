@@ -33,13 +33,13 @@ module.exports = {
         }
       }
     }
-    
+
   },
   networks: {
     pulse: {
-       chainId: 369,
-       url: "https://rpc.pulsechain.com",
-       gasPrice: 50000000000,
+      chainId: 943,
+      url: "https://rpc.v4.testnet.pulsechain.com",
+      gasPrice: 50000000000,
     }
   },
   etherscan: { // needed for contract verification
@@ -52,9 +52,9 @@ module.exports = {
 require("@nomiclabs/hardhat-etherscan");
 const { chainConfig } = require("@nomiclabs/hardhat-etherscan/dist/src/ChainConfig");
 chainConfig['pulse'] = {
-  chainId: 369,
+  chainId: 943,
   urls: {
-    apiURL: "https://scan.pulsechain.com/api",
-    browserURL: "https://scan.pulsechain.com",
+    apiURL: "https://scan.v4.testnet.pulsechain.com/api",
+    browserURL: "https://scan.v4.testnet.pulsechain.com/",
   },
 }
