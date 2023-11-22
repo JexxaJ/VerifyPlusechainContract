@@ -8,11 +8,19 @@ const hre = require("hardhat");
 
 async function main() {
   // Live address of the contract
+<<<<<<< HEAD
   const address = '0x1b6a7990924f1cfc5904362d3caf13510cf74286'
 
   // Specific contract inside /contracts. denoted as "Filename.sol:ContractName"
   // Leave blank if there is only one. 
   const contract = 'contracts/voting.sol:Voting'
+=======
+  const address = '0x21F279B6de28C98a3093E4D79e11E7b82a2E225C'
+
+  // Specific contract inside /contracts. denoted as "Filename.sol:ContractName"
+  // Leave blank if there is only one. 
+  const contract = 'contracts/fluffy.sol:FluffySlippersEdition0'
+>>>>>>> 0b7fa7417539f2cda93071522307207cd76afc3c
 
   // Put constructor args (if any) here for your contract
   const constructorArguments = ["0x25723611B1C4878E2A0e177ab9BF1109c43b9Fd0"]
