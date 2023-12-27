@@ -8,13 +8,13 @@ const hre = require("hardhat");
 
 async function main() {
   // Live address of the contract
-  const address = '0x1b6a7990924f1cfc5904362d3caf13510cf74286'
+  const address = '0xe17c9Affa045033cf3126d431Cc67d502F27EBE3'
 
   // Specific contract inside /contracts. denoted as "Filename.sol:ContractName"
   // Leave blank if there is only one. 
   const contract = 'contracts/voting.sol:Voting'
 
-  // Put constructor args (if any) here for your contract
+  // Put constructor args (if any) here for your contract    0x7FF1d7D0c669a2602Ed17059785cA344BB6db925
   const constructorArguments = ["0x25723611B1C4878E2A0e177ab9BF1109c43b9Fd0"]
 
   if (address === '') {
