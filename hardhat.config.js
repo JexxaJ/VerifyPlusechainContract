@@ -35,7 +35,7 @@ module.exports = {
         }
       },
       {
-        version: "0.8.20",
+        version: "0.8.18",
         settings: {
           "evmVersion": "london",
           optimizer: {
