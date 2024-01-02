@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17; //London EVM
+pragma solidity 0.8.20; //shanghai EVM
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.0.0/contracts/token/ERC20/IERC20.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.0.0/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title Voting contract
 /// @notice This contract allows for voting using an ERC20 token.
@@ -34,7 +34,7 @@ contract Voting is Ownable {
     event VoteWithdrawn(address voter, uint256 candidate, uint256 amount);
 
     /// @notice Sets the ERC20 token used for voting
-    constructor(address _token) Ownable() {
+    constructor(address _token) Ownable(_msgSender()) {
         token = IERC20(_token);
     }
 

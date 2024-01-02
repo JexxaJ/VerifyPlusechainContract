@@ -8,7 +8,7 @@ const hre = require("hardhat");
 
 async function main() {
   // Live address of the contract
-  const address = '0x9d9c5a40b45e6f998d6b0be1991de52bf953aff5'
+  const address = '0xaafcab9005e45b054c7b92c7c92ce20ce2264c46'
 
   // Specific contract inside /contracts. denoted as "Filename.sol:ContractName"
   // Leave blank if there is only one. 
