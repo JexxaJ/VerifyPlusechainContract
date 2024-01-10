@@ -19,6 +19,7 @@ contract Voting is Ownable {
     mapping(uint256 => uint256) public candidateVotes;
     mapping(address => mapping(uint256 => Votes)) public voterVotesPerCandidate;
     mapping(address => mapping(uint256 => bool)) public voterVotedCandidate;
+    mapping(address => uint256) public votesPerVoter;
 
     // Variables
     uint256[] candidates;
@@ -130,13 +131,14 @@ contract Voting is Ownable {
         require(success, "Token transfer failed");
 
         voterVotedCandidate[msg.sender][_candidate] = true;
+        votesPerVoter[msg.sender] += 1;
     }
 
     /// @notice Allows a user to vote for more than one candidate
     function multiVote(
         uint256[] memory _candidates,
         uint256[] memory _amounts
-    ) external {
+    ) public {
         require(initialised, "Voting has not been initialised");
 
         if (endTime > 0) {
@@ -171,16 +173,16 @@ contract Voting is Ownable {
         }
 
         // Send tockens to Voting smart contract
-        bool success = token.transferFrom(
+        /*bool success = token.transferFrom(
             msg.sender,
             address(this),
             totalAmount
         );
-        require(success, "Token transfer failed");
+        require(success, "Token transfer failed"); */
     }
 
     /// @notice Allows a user to withdraw their vote for a candidate
-    function withdrawVote(uint256 _candidate) external returns (uint256) {
+    function withdrawVote(uint256 _candidate) public returns (uint256) {
         require(initialised, "Voting has not been initialised");
 
         bool votingIsOver = checkVotingIsOver();
@@ -204,6 +206,7 @@ contract Voting is Ownable {
             candidateVotes[_candidate] -= voteAmount;
             voterVotesPerCandidate[msg.sender][_candidate].amount = 0;
             voterVotedCandidate[msg.sender][_candidate] = false;
+            votesPerVoter[msg.sender] -= 1;
             emit VoteWithdrawn(msg.sender, _candidate, voteAmount);
         }
 
@@ -214,15 +217,34 @@ contract Voting is Ownable {
         return voteAmount;
     }
 
+    /// @notice Allows a user to withdraw various votes at once
+    function withdrawVotes(uint256[] memory _candidates) public {
+        require(initialised, "Voting has not been initialised");
+
+        require(_candidates.length > 0, "List of candidates is empty");
+
+        require(hasVoted(msg.sender), "No votes casted from this address");
+
+        // Iterate over list of candidates
+        for (uint256 index = 0; index < _candidates.length; index++) {
+            withdrawVote(_candidates[index]);
+        }
+
+        // Transfer the tokens back to the voter
+        /* require(totalVoteAmount > 0, "No votes to withdraw");
+        bool success = token.transfer(msg.sender, totalVoteAmount);
+        require(success, "Token transfer failed"); */
+    }
+
     /// @notice Allows a user to withdraw all their votes for all candidates
-    function withdrawAllVotes() external returns (uint256) {
+    /*function withdrawAllVotes() external returns (uint256) {
         require(initialised, "Voting has not been initialised");
 
         bool votingIsOver = checkVotingIsOver();
 
-        require(hasVoted(), "No votes casted from this address");
+        require(hasVoted(msg.sender), "No votes casted from this address");
 
-        uint256 totalVoteAmount = getTotalVotingPower();
+        uint256 totalVoteAmount = getTotalVotingPower(msg.sender);
 
         // Iterate over all candidates
         for (
@@ -260,37 +282,23 @@ contract Voting is Ownable {
         require(success, "Token transfer failed");
 
         return totalVoteAmount;
-    }
+    } */
 
     /// @notice Returns an array of the number of votes a voter casted
-    function getNumberOfVotes() external view returns (uint256) {
-        uint256 votesCasted = 0;
-
-        for (
-            uint256 candidate = 1;
-            candidate < totalCandidates + 1;
-            candidate++
-        ) {
-            if (voterVotedCandidate[msg.sender][candidates[candidate]]) {
-                if (
-                    voterVotesPerCandidate[msg.sender][candidates[candidate]]
-                        .amount > 0
-                ) {
-                    votesCasted += 1;
-                }
-            }
-        }
-
-        return votesCasted;
+    function getNumberOfVotes(address _voter) external view returns (uint256) {
+        return votesPerVoter[_voter];
     }
 
     /// @notice Returns the voting power of a vote for a candidate
-    function getVote(uint256 _candidate) external view returns (uint256) {
-        return voterVotesPerCandidate[msg.sender][_candidate].amount;
+    function getVote(
+        address _voter,
+        uint256 _candidate
+    ) external view returns (uint256) {
+        return voterVotesPerCandidate[_voter][_candidate].amount;
     }
 
     /// @notice Returns an array of the number of votes a voter casted
-    function getTotalVotingPower() public view returns (uint256) {
+    /*function getTotalVotingPower(address _voter) public view returns (uint256) {
         uint256 votesCasted = 0;
 
         for (
@@ -298,12 +306,12 @@ contract Voting is Ownable {
             candidate < totalCandidates + 1;
             candidate++
         ) {
-            if (voterVotedCandidate[msg.sender][candidates[candidate]]) {
+            if (voterVotedCandidate[_voter][candidates[candidate]]) {
                 if (
-                    voterVotesPerCandidate[msg.sender][candidates[candidate]]
+                    voterVotesPerCandidate[_voter][candidates[candidate]]
                         .amount > 0
                 ) {
-                    votesCasted += voterVotesPerCandidate[msg.sender][
+                    votesCasted += voterVotesPerCandidate[_voter][
                         candidates[candidate]
                     ].amount;
                 }
@@ -311,18 +319,10 @@ contract Voting is Ownable {
         }
 
         return votesCasted;
-    }
+    } */
 
-    function hasVoted() public view returns (bool) {
-        for (
-            uint256 candidate = 1;
-            candidate < totalCandidates + 1;
-            candidate++
-        ) {
-            if (voterVotedCandidate[msg.sender][candidates[candidate]]) {
-                return true;
-            }
-        }
+    function hasVoted(address _voter) public view returns (bool) {
+        if (votesPerVoter[_voter] > 0) return true;
         return false;
     }
 
@@ -403,7 +403,7 @@ contract Voting is Ownable {
             candidates.push(_newCandidatesList[index]);
         }
 
-        totalCandidates = candidates.length;
+        totalCandidates = candidates.length - 1;
 
         return candidates;
     }
